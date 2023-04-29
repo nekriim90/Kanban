@@ -6,6 +6,13 @@ use App\Entity\Playlist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+define("PIDID", "p.id id");
+define("PNAMENAME", "p.name name");
+define("CNAMECATEGORIENAME", "c.name categoriename");
+define("PFORMATIONS", "p.formations");
+define("FCATEGORIES", "f.categories");
+define("PID", "p.id");
+define("CNAME", "c.name");
 /**
  * @extends ServiceEntityRepository<Playlist>
  *
@@ -24,7 +31,6 @@ class PlaylistRepository extends ServiceEntityRepository
     public function add(Playlist $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
-
         if ($flush) {
             $this->getEntityManager()->flush();
         }
@@ -47,17 +53,17 @@ class PlaylistRepository extends ServiceEntityRepository
      */
     public function findAllOrderBy($champ, $ordre): array{
         return $this->createQueryBuilder('p')
-                ->select('p.id id')
-                ->addSelect('p.name name')
-                ->addSelect('c.name categoriename')
-                ->leftjoin('p.formations', 'f')
-                ->leftjoin('f.categories', 'c')
-                ->groupBy('p.id')
-                ->addGroupBy('c.name')
+                ->select(PIDID)
+                ->addSelect(PNAMENAME)
+                ->addSelect(CNAMECATEGORIENAME)
+                ->leftjoin(PFORMATIONS, 'f')
+                ->leftjoin(FCATEGORIES, 'c')
+                ->groupBy(PID)
+                ->addGroupBy(CNAME)
                 ->orderBy('p.'.$champ, $ordre)
-                ->addOrderBy('c.name')
+                ->addOrderBy(CNAME)
                 ->getQuery()
-                ->getResult();       
+                ->getResult();
     }
 
     /**
@@ -71,41 +77,37 @@ class PlaylistRepository extends ServiceEntityRepository
     public function findByContainValue($champ, $valeur, $table=""): array{
         if($valeur==""){
             return $this->findAllOrderBy('name', 'ASC');
-        }    
-        if($table==""){      
+        }
+        if($table==""){
             return $this->createQueryBuilder('p')
-                    ->select('p.id id')
-                    ->addSelect('p.name name')
-                    ->addSelect('c.name categoriename')
-                    ->leftjoin('p.formations', 'f')
-                    ->leftjoin('f.categories', 'c')
+                    ->select(PIDID)
+                    ->addSelect(PNAMENAME)
+                    ->addSelect(CNAMECATEGORIENAME)
+                    ->leftjoin(PFORMATIONS, 'f')
+                    ->leftjoin(FCATEGORIES, 'c')
                     ->where('p.'.$champ.' LIKE :valeur')
                     ->setParameter('valeur', '%'.$valeur.'%')
-                    ->groupBy('p.id')
-                    ->addGroupBy('c.name')
+                    ->groupBy(PID)
+                    ->addGroupBy(CNAME)
                     ->orderBy('p.name', 'ASC')
-                    ->addOrderBy('c.name')
+                    ->addOrderBy(CNAME)
                     ->getQuery()
-                    ->getResult();              
-        }else{   
+                    ->getResult();
+        }else{
             return $this->createQueryBuilder('p')
-                    ->select('p.id id')
-                    ->addSelect('p.name name')
-                    ->addSelect('c.name categoriename')
-                    ->leftjoin('p.formations', 'f')
-                    ->leftjoin('f.categories', 'c')
+                    ->select(PIDID)
+                    ->addSelect(PNAMENAME)
+                    ->addSelect(CNAMECATEGORIENAME)
+                    ->leftjoin(PFORMATIONS, 'f')
+                    ->leftjoin(FCATEGORIES, 'c')
                     ->where('c.'.$champ.' LIKE :valeur')
                     ->setParameter('valeur', '%'.$valeur.'%')
-                    ->groupBy('p.id')
-                    ->addGroupBy('c.name')
+                    ->groupBy(PID)
+                    ->addGroupBy(CNAME)
                     ->orderBy('p.name', 'ASC')
-                    ->addOrderBy('c.name')
+                    ->addOrderBy(CNAME)
                     ->getQuery()
                     ->getResult();              
-            
-        }           
-    }    
-
-
-    
+        }
+    }
 }
