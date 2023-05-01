@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use const PAGEPLAYLISTS;
 define("PAGEPLAYLISTS", "pages/playlists.html.twig");
 /**
  * Description of PlaylistsController
@@ -67,10 +67,9 @@ class PlaylistsController extends AbstractController {
         $categories = $this->categorieRepository->findAll();
         return $this->render(PAGEPLAYLISTS, [
             'playlists' => $playlists,
-            'categories' => $categories            
+            'categories' => $categories
         ]);
-    }         
-    
+    }
     /**
      * @Route("/playlists/recherche/{champ}/{table}", name="playlists.findallcontain")
      * @param type $champ
@@ -80,7 +79,11 @@ class PlaylistsController extends AbstractController {
      */
     public function findAllContain($champ, Request $request, $table=""): Response{
         $valeur = $request->get("recherche");
-        $playlists = $this->playlistRepository->findByContainValue($champ, $valeur, $table);
+        if ($table == ""){
+            $playlists = $this->playlistRepository->findByContainValue($champ, $valeur);
+        }else{
+            $playlists = $this->playlistRepository->findByContainValueBis($champ, $valeur, $table);
+        }
         $categories = $this->categorieRepository->findAll();
         return $this->render(PAGEPLAYLISTS, [
             'playlists' => $playlists,
@@ -99,7 +102,7 @@ class PlaylistsController extends AbstractController {
         $playlist = $this->playlistRepository->find($id);
         $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
         $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
-        return $this->render(PAGEPLAYLISTS, [
+        return $this->render("pages/playlist.html.twig", [
             'playlist' => $playlist,
             'playlistcategories' => $playlistCategories,
             'playlistformations' => $playlistFormations
