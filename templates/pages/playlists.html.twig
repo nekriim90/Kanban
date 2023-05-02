@@ -34,7 +34,9 @@
                     </form>            
                 </th>
                 <th class="text-center align-top" scope="col">
-                    Nombre de Formation
+                    Nombre de Formation<br />
+                    <a href="{{ path('playlists.sort', {champ:'nbformations', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('playlists.sort', {champ:'nbformations', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
                 </th>
             </tr>
         </thead>
