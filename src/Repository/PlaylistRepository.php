@@ -9,9 +9,6 @@ use const CNAME;
 use const FCATEGORIES;
 use const PFORMATIONS;
 
-define("PIDID", "p.id id");
-define("PNAMENAME", "p.name name");
-define("CNAMECATEGORIENAME", "c.name categoriename");
 define("PFORMATIONS", "p.formations");
 define("FCATEGORIES", "f.categories");
 define("PID", "p.id");

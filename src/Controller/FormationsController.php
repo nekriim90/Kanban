@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-define("PAGEFORMATIONS", "pages/formation.html.twig");
+define("PAGEFORMATIONS", "pages/formations.html.twig");
 /**
  * Controleur des formations
  *
@@ -97,7 +97,7 @@ class FormationsController extends AbstractController {
      */
     public function showOne($id): Response{
         $formation = $this->formationRepository->find($id);
-        return $this->render(PAGEFORMATIONS, [
+        return $this->render("pages/formation.html.twig", [
             'formation' => $formation
         ]);        
     }   
